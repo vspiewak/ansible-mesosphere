@@ -1,0 +1,46 @@
+keypair: "{{ lookup('env','PEM_NAME') }}"
+
+amazon:
+  dns_env: dev
+  instances:
+    mesos_master:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 1
+      client: xke
+      role: mesos
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 5050, to_port: 5050, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 2181, to_port: 2181, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 2888, to_port: 2888, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 3888, to_port: 3888, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 8181, to_port: 8181, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: xke_mesos_master_sg }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: xke_mesos_slave_sg }
+    mesos_slave:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 1
+      client: xke
+      role: mesos
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 31000, to_port: 32000, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 5051, to_port: 5051, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: xke_mesos_master_sg }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: xke_mesos_slave_sg }
+    bamboo:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 1
+      client: xke
+      role: bamboo
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 80, to_port: 80, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 8000, to_port: 8000, cidr_ip: 0.0.0.0/0 }

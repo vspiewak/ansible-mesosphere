@@ -1,0 +1,6 @@
+- hosts: local
+  connection: local
+  gather_facts: true
+
+  roles:
+    - create-ec2

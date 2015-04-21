@@ -1,0 +1,41 @@
+# Create EC2 instances
+
+- name: Create EC2 security groups
+  local_action:
+    module: ec2_group
+    name: "{{ item.value.client }}_{{ item.key}}_sg"
+    description: "{{ item.value.client }}_{{ item.key}} security group rules"
+  with_dict: amazon.instances
+  tags: security
+
+- name: Apply EC2 security group rules
+  local_action:
+    module: ec2_group
+    name: "{{ item.value.client }}_{{ item.key}}_sg"
+    description: "{{ item.value.client }}_{{ item.key}} security group rules"
+    rules: "{{item.value.security_group.rules}}"
+  with_dict: amazon.instances
+  tags: security
+
+- name: Create EC2 instances
+  local_action:
+    module: ec2
+    key_name: "{{ keypair }}"
+    instance_type: "{{ item.value.type }}"
+    group: "{{ item.value.client }}_{{ item.key}}_sg"
+    instance_tags:
+      Client: "{{ item.value.client }}"
+      Name: "{{ item.value.client }}.{{ item.key}}.{{ amazon.dns_env }}"
+      Role: "{{ item.value.role}}"
+      ClusterRole: "{{ item.key}}"
+      Environment: "{{ amazon.dns_env }}"
+      CompleteDesignation: "{{ item.value.client }}_{{ item.key}}_{{ amazon.dns_env }}"
+    image: "{{ item.value.ami }}"
+    wait: yes
+    exact_count: "{{ item.value.count }}"
+    count_tag :
+       Client: "{{ item.value.client }}"
+       ClusterRole: "{{ item.key}}"
+       Environment: "{{ amazon.dns_env }}"
+  register: "ec2result"
+  with_dict: amazon.instances

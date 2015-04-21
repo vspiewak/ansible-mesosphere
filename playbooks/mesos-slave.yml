@@ -1,0 +1,8 @@
+# playbook for mesos slave
+
+- hosts: tag_ClusterRole_mesos_slave
+  user: admin
+  sudo: yes
+
+  roles:
+    - mesos-slave

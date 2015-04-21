@@ -1,0 +1,8 @@
+# playbook for mesos master
+
+- hosts: tag_ClusterRole_mesos_master
+  user: admin
+  sudo: yes
+
+  roles:
+    - mesos-master
