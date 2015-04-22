@@ -1,2 +1,41 @@
-- name: Display all variables/facts known for the host
-  debug: var=hostvars[inventory_hostname]
+# Mesos master role
+
+- name: Set mesos zookeeper link
+  template:
+    src=mesos_zk.j2
+    dest=/etc/mesos/zk
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart mesos-master
+
+- name: Create mesos-master hostname file
+  template:
+    src=hostname.j2
+    dest=/etc/mesos-master/hostname
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart mesos-master
+
+- name: Configure mesos-master quorum
+  template:
+    src=mesos_quorum.j2
+    dest=/etc/mesos-master/quorum
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart mesos-master
+
+- name: Disable mesos-slave service
+  service:
+    name=mesos-slave
+    enabled=no
+    state=stopped
+
+- name: Enable mesos-master service
+  service:
+    name=mesos-master
+    enabled=yes
+    state=started
+  tags: service

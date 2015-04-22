@@ -1,0 +1,10 @@
+# playbook for zookeeper
+
+- hosts: zookeeper
+  user: admin
+  sudo: yes
+
+  roles:
+    - all
+    - java
+    - zookeeper

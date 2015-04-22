@@ -1,0 +1,13 @@
+---
+# handlers
+
+- name: Clean and restart mesos-slave
+  file:
+    path=/tmp/mesos
+    state=absent
+  notify: Restart mesos-slave
+
+- name: Restart mesos-slave
+  service:
+    name=mesos-slave
+    state=restarted

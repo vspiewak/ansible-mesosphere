@@ -1,0 +1,24 @@
+# Zookeeper role
+
+- debug: msg="Will use zookeeper id {{ zookeeper.id }}"
+
+- name: Install zookeeper deamon using APT
+  apt: pkg={{item}} state=installed
+  tags: bootstrap
+  with_items:
+    - zookeeper
+    - zookeeperd
+
+- name: Overwrite myid file
+  template: src=myid.j2 dest=/etc/zookeeper/conf/myid
+  tags: deploy
+
+- name: Overwrite default config file
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  tags: deploy
+
+- name: Restart zookeeper
+  service: name=zookeeper state=restarted enabled=yes
+  tags: deploy
+
+- debug: msg="Used zookeeper id {{ zookeeper.id }}"

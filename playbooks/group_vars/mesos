@@ -1,0 +1,4 @@
+mesos:
+  quorum: 1
+
+zookeeper_group: "xke_zookeeper_dev"

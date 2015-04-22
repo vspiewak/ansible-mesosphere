@@ -1,0 +1,16 @@
+# JDK8 role
+
+- name: Install WebUpd8 APT Key
+  apt_key: id=EEA14886 keyserver='keyserver.ubuntu.com' state=present
+
+- name: Install WebUpd8 APT repository
+  apt_repository: repo='deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main' state=present
+
+- name: Will automatically accept Oracle License
+  debconf: name=oracle-java8-installer question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: Install Oracle Java
+  apt: name=oracle-java8-installer state=latest

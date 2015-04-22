@@ -1,2 +1,44 @@
-- name: Display all variables/facts known for the host
-  debug: var=hostvars[inventory_hostname]
+# Mesos slave role
+
+- name: Set mesos zookeeper link
+  template:
+    src=mesos_zk.j2
+    dest=/etc/mesos/zk
+    owner=root
+    group=root
+    mode=0644
+  notify: Clean and restart mesos-slave
+
+- name: Create mesos-slave hostname file
+  template:
+    src=hostname.j2
+    dest=/etc/mesos-slave/hostname
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart mesos-slave
+
+- name: Configure mesos-slave
+  template:
+    src=value_file.j2
+    dest="/etc/mesos-slave/{{ item.key }}"
+    owner=root
+    group=root
+    mode=0644
+  with_items:
+    - { key: "containerizers", value: "docker,mesos" }
+    - { key: "executor_registration_timeout", value: "5mins" }
+  notify: Clean and restart mesos-slave
+
+- name: Disable mesos-master service
+  service:
+    name=mesos-master
+    enabled=no
+    state=stopped
+
+- name: Enable mesos-slave service
+  service:
+    name=mesos-slave
+    enabled=yes
+    state=started
+  tags: service

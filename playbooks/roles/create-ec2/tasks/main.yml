@@ -25,17 +25,17 @@
     group: "{{ item.value.client }}_{{ item.key}}_sg"
     instance_tags:
       Client: "{{ item.value.client }}"
-      Name: "{{ item.value.client }}.{{ item.key}}.{{ amazon.dns_env }}"
+      Name: "{{ item.value.client }}.{{ item.key}}.{{ amazon.env }}"
       Role: "{{ item.value.role}}"
       ClusterRole: "{{ item.key}}"
-      Environment: "{{ amazon.dns_env }}"
-      CompleteDesignation: "{{ item.value.client }}_{{ item.key}}_{{ amazon.dns_env }}"
+      Environment: "{{ amazon.env }}"
+      CompleteDesignation: "{{ item.value.client }}_{{ item.key}}_{{ amazon.env }}"
     image: "{{ item.value.ami }}"
     wait: yes
     exact_count: "{{ item.value.count }}"
     count_tag :
        Client: "{{ item.value.client }}"
        ClusterRole: "{{ item.key}}"
-       Environment: "{{ amazon.dns_env }}"
+       Environment: "{{ amazon.env }}"
   register: "ec2result"
   with_dict: amazon.instances

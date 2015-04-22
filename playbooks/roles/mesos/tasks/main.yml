@@ -1,15 +1,22 @@
-# Mesos role
+# Mesos role (common to master/slave)
 
-- name: Install apt key for mesosphere repository
+- name: Install APT Key for Mesosphere repository
   apt_key:
     keyserver=hkp://keyserver.ubuntu.com:80
     id=E56151BF
     state=present
 
-- name: Install apt mesosphere repository
+- name: Install APT Mesosphere repository
   apt_repository:
     repo="deb http://repos.mesosphere.io/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main"
     state=present
 
-- name: Update apt cache
+- name: Update APT
   apt: update_cache=yes
+
+- name: Install Mesos package
+  apt:
+    pkg=mesos
+    state=present
+    force=yes
+  tags: install

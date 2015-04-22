@@ -1,12 +1,4 @@
 # playbook for mesos
 
-- hosts: tag_Role_mesos
-  user: admin
-  sudo: yes
-
-  roles:
-    - all
-    - mesos
-
 - include: mesos-master.yml
 - include: mesos-slave.yml

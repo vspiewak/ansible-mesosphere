@@ -1,12 +1,22 @@
 keypair: "{{ lookup('env','PEM_NAME') }}"
 
 amazon:
-  dns_env: dev
+  env: "{{ lookup('env','ENV') }}"
   instances:
-    mesos_master:
+    zookeeper:
       ami: ami-cb47c1bc
       type: t1.micro
       count: 1
+      client: xke
+      role: zookeeper
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 2181, to_port: 2181, cidr_ip: 0.0.0.0/0 }
+    mesos_master:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 3
       client: xke
       role: mesos
       security_group:
@@ -36,7 +46,7 @@ amazon:
     bamboo:
       ami: ami-cb47c1bc
       type: t1.micro
-      count: 1
+      count: 0
       client: xke
       role: bamboo
       security_group:

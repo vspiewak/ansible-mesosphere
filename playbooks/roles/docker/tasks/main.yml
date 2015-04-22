@@ -1,0 +1,47 @@
+# Docker role
+
+- name: Add debian wheezy-backports repository for kernel update
+  apt_repository:
+    repo="deb http://http.debian.net/debian wheezy-backports main"
+    state=present
+  tags: install
+
+- name: Update APT
+  apt: update_cache=yes
+  tags: install
+
+- name: Update Kernel
+  apt:
+    pkg="linux-image-amd64"
+    default_release=wheezy-backports
+    install_recommends=no
+    state=latest
+  tags: install
+
+- name: Install APT Key for docker repository
+  apt_key:
+    keyserver=hkp://keyserver.ubuntu.com:80
+    id=36A1D7869245C8950F966E92D8576A8BA88D21E9
+    state=present
+  tags: install
+
+- name: Install Docker APT Repository
+  apt_repository:
+    repo="deb http://get.docker.io/ubuntu docker main"
+    state=present
+  tags: install
+
+- name: Install Docker
+  apt:
+    pkg=lxc-docker
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
+  tags: install
+
+- name: Enable Docker service
+  service:
+    name=docker
+    enabled=yes
+    state=started
+  tags: service
