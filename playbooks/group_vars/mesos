@@ -1,4 +1,4 @@
 mesos:
-  quorum: 1
+  quorum: 2
 
-zookeeper_group: "xke_zookeeper_dev"
+zookeeper_group: "{{client}}_{{env}}_zookeeper"

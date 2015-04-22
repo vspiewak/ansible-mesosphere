@@ -1,4 +1,4 @@
-# playbook for mesos
+# playbook for Mesos
 
 - include: mesos-master.yml
 - include: mesos-slave.yml

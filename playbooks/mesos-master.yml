@@ -1,6 +1,6 @@
 # playbook for mesos master
 
-- hosts: mesos_master
+- hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_mesos_master"
   user: admin
   sudo: yes
 

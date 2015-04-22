@@ -1,6 +1,6 @@
 # playbook for zookeeper
 
-- hosts: zookeeper
+- hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_zookeeper"
   user: admin
   sudo: yes
 

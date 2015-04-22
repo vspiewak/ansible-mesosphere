@@ -1,6 +1,6 @@
 # playbook for mesos slave
 
-- hosts: mesos_slave
+- hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_mesos_slave"
   user: admin
   sudo: yes
 

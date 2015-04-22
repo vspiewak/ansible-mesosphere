@@ -1,1 +1,4 @@
+client: "{{ lookup('env','CLIENT') }}"
+env: "{{ lookup('env','ENV') }}"
+
 timezone: "Europe/Paris"
