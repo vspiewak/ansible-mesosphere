@@ -7,7 +7,7 @@ amazon:
     zookeeper:
       ami: ami-cb47c1bc
       type: t1.micro
-      count: 2
+      count: 3
       role: zookeeper
       security_group:
         rules:
@@ -41,6 +41,15 @@ amazon:
           - { proto: tcp, from_port: 5051, to_port: 5051, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
+    marathon:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 0
+      role: marathon
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
     bamboo:
       ami: ami-cb47c1bc
       type: t1.micro
