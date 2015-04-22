@@ -57,7 +57,7 @@ amazon:
     gitlab:
       ami: ami-cb47c1bc
       type: t1.micro
-      count: 0
+      count: 1
       role: gitlab
       security_group:
         rules:
