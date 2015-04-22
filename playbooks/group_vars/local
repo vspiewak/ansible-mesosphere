@@ -56,7 +56,7 @@ amazon:
           - { proto: tcp, from_port: 15672, to_port: 15672, cidr_ip: 0.0.0.0/0 }
     gitlab:
       ami: ami-cb47c1bc
-      type: t1.micro
+      type: m1.small
       count: 1
       role: gitlab
       security_group:
