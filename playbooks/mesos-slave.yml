@@ -1,4 +1,4 @@
-# playbook for mesos slave
+# playbook for Mesos slave
 
 - hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_mesos_slave"
   user: admin

@@ -1,4 +1,4 @@
-# playbook for mesos master
+# playbook for Mesos master
 
 - hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_mesos_master"
   user: admin
