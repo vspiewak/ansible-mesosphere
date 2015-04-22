@@ -1,3 +1,24 @@
+Ansible Mesosphere 
+==================
+
+Install a Mesosphere infrastructure on EC2 (Target: Highly Available)
+
+Install Ansible: 
+
+    sudo easy_install pip
+    sudo pip install boto --quiet --upgrade
+    sudo pip install ansible --quiet --upgrade
+
+Set your AWS Credentials:
+
+    export ANSIBLE_HOST_KEY_CHECKING=False
+    export EC2_REGION=eu-west-1
+    export AWS_ACCESS_KEY=...
+    export AWS_SECRET_KEY=...
+    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
+    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
+
+    
 Create EC2 instances:
 
     PEM_NAME=vspiewak-xke CLIENT=xke ENV=dev ansible-playbook -i inventory/local playbooks/create-ec2.yml
