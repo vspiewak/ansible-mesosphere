@@ -26,6 +26,9 @@ clientPort={{clientPort}}
 #server.1=zookeeper1:2888:3888
 #server.2=zookeeper2:2888:3888
 #server.3=zookeeper3:2888:3888
+{% for host in groups[zookeeper_group] %}
+server.{{ hostvars[host]['zookeeper_index'] }}={{ hostvars[host].ec2_ip_address }}:2888:3888
+{% endfor %}
 
 
 # To avoid seeks ZooKeeper allocates space in the transaction log file in

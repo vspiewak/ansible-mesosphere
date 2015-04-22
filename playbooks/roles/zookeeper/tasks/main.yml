@@ -1,6 +1,8 @@
 # Zookeeper role
 
 - debug: msg="Will use zookeeper id {{ zookeeper.id }}"
+- set_fact:
+    zookeeper_index: "{{zookeeper.id}}"
 
 - name: Install zookeeper deamon using APT
   apt: pkg={{item}} state=installed

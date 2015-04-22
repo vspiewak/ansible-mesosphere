@@ -13,6 +13,8 @@ amazon:
         rules:
           - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 2181, to_port: 2181, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 2888, to_port: 2888, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 3888, to_port: 3888, cidr_ip: 0.0.0.0/0 }
     mesos_master:
       ami: ami-cb47c1bc
       type: t1.micro
@@ -41,14 +43,26 @@ amazon:
           - { proto: tcp, from_port: 5051, to_port: 5051, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
-    marathon:
+    sensu:
       ami: ami-cb47c1bc
       type: t1.micro
       count: 0
-      role: marathon
+      role: sensu
       security_group:
         rules:
           - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 3000, to_port: 3000, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 15672, to_port: 15672, cidr_ip: 0.0.0.0/0 }
+    gitlab:
+      ami: ami-cb47c1bc
+      type: t1.micro
+      count: 0
+      role: gitlab
+      security_group:
+        rules:
+          - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
+          - { proto: tcp, from_port: 80, to_port: 80, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
     bamboo:
       ami: ami-cb47c1bc

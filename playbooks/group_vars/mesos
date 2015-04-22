@@ -1,4 +1,2 @@
 mesos:
   quorum: 2
-
-zookeeper_group: "{{client}}_{{env}}_zookeeper"
