@@ -4,4 +4,4 @@
 - include: zookeeper.yml
 - include: mesos.yml
 #- include: sensu.yml
-#- include: gitlab.yml
+- include: gitlab.yml

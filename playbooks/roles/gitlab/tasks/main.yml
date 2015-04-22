@@ -1,0 +1,34 @@
+---
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: 'Install sshd'
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - openssh-server
+
+- name: 'Enable and Start sshd service'
+  service: name=ssh enabled=yes state=started
+
+- name: 'Install postfix'
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - postfix
+
+- name: 'Enable and Start postfix service'
+  service: name=postfix enabled=yes state=started
+
+- name: 'GitLab deb'
+  get_url: url=https://downloads-packages.s3.amazonaws.com/debian-7.8/gitlab-ce_7.10.0~omnibus-1_amd64.deb dest=/tmp/gitlab.deb
+
+- name: 'Install GitLab deb'
+  apt: deb=/tmp/gitlab.deb
+
+- name: 'Check if GitLab is already configured'
+  stat: path=/var/opt/gitlab
+  register: gitlab_configured
+
+- name: 'Configure GitLab'
+  shell: 'gitlab-ctl reconfigure'
+  when: gitlab_configured.stat.exists == false
