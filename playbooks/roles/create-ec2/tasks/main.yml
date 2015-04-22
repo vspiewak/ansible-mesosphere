@@ -25,10 +25,11 @@
     group: "{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
     instance_tags:
       Client: "{{amazon.client}}"
+      Environment: "{{amazon.env}}"
+      ClientEnvironment: "{{amazon.client}}.{{amazon.env}}"
       Name: "{{amazon.client}}.{{amazon.env}}.{{item.key}}"
       Role: "{{item.value.role}}"
       ClusterRole: "{{item.key}}"
-      Environment: "{{amazon.env}}"
       CompleteDesignation: "{{amazon.client}}_{{amazon.env}}_{{item.key}}"
     image: "{{item.value.ami}}"
     wait: yes
