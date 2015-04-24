@@ -1,7 +1,7 @@
-Ansible Mesosphere 
-==================
+Ansible Mesosphere
+------------------
 
-Install a Mesosphere infrastructure on EC2 (Target: Highly Available)
+Install a Mesosphere stack on EC2 (Goal: Highly Available)
 
 Install Ansible: 
 
@@ -27,6 +27,10 @@ Create EC2 instances:
 Configure EC2 instances:
 
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/site.yml
-    
+
+    <or>
+
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/zookeeper.yml
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/mesos.yml
+    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
+    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/gitlab.yml
