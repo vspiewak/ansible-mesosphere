@@ -3,5 +3,7 @@ env: "{{ lookup('env','ENV') }}"
 
 zookeeper_group: "{{client}}_{{env}}_zookeeper"
 mesos_master_group: "{{client}}_{{env}}_mesos_master"
+mesos_slave_group: "{{client}}_{{env}}_mesos_slave"
+gitlab_group: "{{client}}_{{env}}_gitlab"
 
 timezone: "Europe/Paris"
