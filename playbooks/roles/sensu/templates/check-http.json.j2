@@ -1,0 +1,14 @@
+{
+    "checks": {
+    {% for host in groups[gitlab_group] %}
+        "check-http-gitlab-{{loop.index}}": {
+          "command": "/etc/sensu/plugins/check-http.rb -u http://{{ hostvars[host].ec2_ip_address }}/users/sign_in",
+          "subscribers": [
+            "gitlab"
+          ],
+          "interval": 60
+        }
+      {% if not loop.last %},{% endif %}
+    {% endfor %}
+    }
+}

@@ -136,6 +136,9 @@
     group=sensu
     mode=0755
 
+- name: 'Set file permissions on plugin'
+  file: path=/etc/sensu/plugins/check-mesos.rb state=touch mode="u=rwx,g=r,o=r"
+
 - name: 'Install Zookeeper check plugin'
   get_url:
     url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/zookeeper/check-znode.rb
@@ -148,6 +151,25 @@
     owner=sensu
     group=sensu
     mode=0755
+
+- name: 'Set file permissions on plugin'
+  file: path=/etc/sensu/plugins/check-znode.rb state=touch mode="u=rwx,g=r,o=r"
+
+- name: 'Install Http check plugin'
+  get_url:
+    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/http/check-http.rb
+    dest=/etc/sensu/plugins/check-http.rb
+
+- name: 'Configure Http checks'
+  template:
+    src=check-http.json.j2
+    dest=/etc/sensu/conf.d/check-http.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Set file permissions on plugin'
+  file: path=/etc/sensu/plugins/check-http.rb state=touch mode="u=rwx,g=r,o=r"
 
 - name: 'Configure Sensu client'
   template:
@@ -172,12 +194,6 @@
     group=sensu
     state=directory
     recurse=yes
-
-- name: 'Set execution permissions on all plugins'
-  shell: find /etc/sensu/plugins -name "*.py" -exec chmod a+x {} \;
-  shell: find /etc/sensu/plugins -name "*.rb" -exec chmod a+x {} \;
-  shell: find /etc/sensu/plugins -name "*.sh" -exec chmod a+x {} \;
-  sudo_user: root
 
 - name: Enable Sensu server service
   service: name=sensu-server enabled=yes state=started
