@@ -1,0 +1,9 @@
+{
+  "client": {
+    "name": "Dev",
+    "address": "{{ hostvars[inventory_hostname].ec2_ip_address }}",
+    "subscriptions": [
+      "zookeeper", "mesos"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "checks": {
+    {% for host in groups[mesos_master_group] %}
+        "check-mesos-{{loop.index}}": {
+          "command": "/etc/sensu/plugins/check-mesos.rb -s {{ hostvars[host].ec2_ip_address }} -m master",
+          "subscribers": [
+            "mesos"
+          ],
+          "interval": 60
+        }
+      {% if not loop.last %},{% endif %}
+    {% endfor %}
+    }
+}

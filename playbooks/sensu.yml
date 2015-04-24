@@ -1,0 +1,9 @@
+# playbook for Marathon
+
+- hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}_sensu"
+  user: admin
+  sudo: yes
+
+  roles:
+    - all
+    - sensu

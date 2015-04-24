@@ -1,0 +1,196 @@
+# Sensu role
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: Install Erlang
+  apt:
+    pkg=erlang-nox
+    state=present
+    force=yes
+  tags: install
+
+- name: Install APT Key for RabbitMQ repository
+  apt_key:
+    url=http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+    state=present
+
+- name: Install APT RabbitMQ repository
+  apt_repository:
+    repo="deb     http://www.rabbitmq.com/debian/ testing main"
+    state=present
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: Install RabbitMQ
+  apt:
+    pkg=rabbitmq-server
+    state=present
+    force=yes
+  tags: install
+
+- name: Enable RabbitMQ service
+  service:
+    name=rabbitmq-server
+    enabled=yes
+    state=started
+  tags: service
+
+- name: Wait 10 seconds for RabbitMQ server to be up
+  shell: sleep 10
+
+- name: Create a RabbitMQ server vhost
+  shell: rabbitmqctl delete_vhost /sensu
+  ignore_errors: yes
+- shell: rabbitmqctl add_vhost /sensu
+
+- name: Create a RabbitMQ user for the sensu vhost
+  shell: rabbitmqctl delete_user sensu
+  ignore_errors: yes
+  shell: rabbitmqctl add_user sensu secret
+
+- name: Set permissions for RabbitMQ user to sensu vhost
+  shell: rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"
+
+- name: Enable RabbitMQ web management console
+  shell: rabbitmq-plugins enable rabbitmq_management
+
+- name: Install Redis server
+  apt:
+    pkg=redis-server
+    state=present
+
+- name: Enable Redis service
+  service:
+    name=redis-server
+    enabled=yes
+    state=restarted
+
+- name: Install APT Key for Sensu repository
+  apt_key:
+    url=http://repos.sensuapp.org/apt/pubkey.gpg
+    state=present
+
+- name: Install APT Sensu repository
+  apt_repository:
+    repo="deb     http://repos.sensuapp.org/apt sensu main"
+    state=present
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: Install Sensu package
+  apt:
+    pkg=sensu
+    state=present
+
+- name: Download /etc/sensu/config.json
+  get_url: url=http://sensuapp.org/docs/0.17/files/config.json dest=/etc/sensu/config.json mode=0440
+
+- name: Install Uchiwa package
+  apt:
+    pkg=uchiwa
+    state=present
+
+- copy: src=uchiwa.json dest=/etc/sensu/uchiwa.json owner=sensu group=sensu mode=0644
+
+- name: Install Ruby & Gem
+  apt:
+    pkg={{item}}
+    state=present
+  with_items:
+   - tar
+   - patch
+   - make
+   - gcc
+   - g++
+   - ruby
+   - ruby-dev
+
+- gem: name={{item}}
+    user_install=no
+    state=latest
+  with_items:
+   - net
+   - json
+   - rest-client
+   - sensu-plugin
+   - zookeeper
+
+- name: 'Download sensu default handler'
+  get_url:
+    url=http://sensuapp.org/docs/0.17/files/default_handler.json
+    dest=/etc/sensu/conf.d/default_handler.json
+
+- name: 'Install Mesos check plugin'
+  get_url:
+    url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-mesos.rb
+    dest=/etc/sensu/plugins/check-mesos.rb
+
+- name: 'Configure Mesos checks'
+  template:
+    src=check-mesos.json.j2
+    dest=/etc/sensu/conf.d/check-mesos.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Install Zookeeper check plugin'
+  get_url:
+    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/zookeeper/check-znode.rb
+    dest=/etc/sensu/plugins/check-znode.rb
+
+- name: 'Configure Zookeeper checks'
+  template:
+    src=check-zookeeper.json.j2
+    dest=/etc/sensu/conf.d/check-zookeeper.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Configure Sensu client'
+  template:
+    src=client.json.j2
+    dest=/etc/sensu/conf.d/client.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Configure Sensu api'
+  copy:
+    src=uchiwa.json
+    dest=/etc/sensu/uchiwa.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Set /etc/sensu ownership to sensu user'
+  file:
+    path=/etc/sensu
+    owner=sensu
+    group=sensu
+    state=directory
+    recurse=yes
+
+- name: 'Set execution permissions on all plugins'
+  shell: find /etc/sensu/plugins -name "*.py" -exec chmod a+x {} \;
+  shell: find /etc/sensu/plugins -name "*.rb" -exec chmod a+x {} \;
+  shell: find /etc/sensu/plugins -name "*.sh" -exec chmod a+x {} \;
+  sudo_user: root
+
+- name: Enable Sensu server service
+  service: name=sensu-server enabled=yes state=started
+  sudo_user: root
+
+- name: Enable Sensu api service
+  service: name=sensu-api enabled=yes state=started
+  sudo_user: root
+
+- name: Enable Sensu client service
+  service: name=sensu-client enabled=yes state=started
+  sudo_user: root
+
+- name: Enable Uchiwa service
+  service: name=uchiwa enabled=yes state=started
+  sudo_user: root

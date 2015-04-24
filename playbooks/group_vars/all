@@ -2,5 +2,6 @@ client: "{{ lookup('env','CLIENT') }}"
 env: "{{ lookup('env','ENV') }}"
 
 zookeeper_group: "{{client}}_{{env}}_zookeeper"
+mesos_master_group: "{{client}}_{{env}}_mesos_master"
 
 timezone: "Europe/Paris"
