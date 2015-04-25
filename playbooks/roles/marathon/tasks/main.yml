@@ -1,0 +1,83 @@
+# Marathon Role
+
+- name: Install APT Key for Mesosphere repository
+  apt_key:
+    keyserver=hkp://keyserver.ubuntu.com:80
+    id=E56151BF
+    state=present
+
+- name: Install APT Mesosphere repository
+  apt_repository:
+    repo="deb http://repos.mesosphere.io/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main"
+    state=present
+
+- name: Update APT
+  apt: update_cache=yes
+
+- name: Install Marathon package
+  apt:
+    pkg=marathon
+    state=present
+    force=yes
+  tags: install
+
+- name: Create marathon configuration directory
+  file:
+    path=/etc/marathon/conf
+    state=directory
+    owner=root
+    group=root
+    mode=0755
+
+- name: Create marathon hostname files
+  template:
+    src=hostname.j2
+    dest=/etc/marathon/conf/hostname
+    owner=root
+    group=root
+    mode=0644
+
+- name: Disable zookeeper service
+  service:
+    name=zookeeper
+    enabled=no
+    state=stopped
+
+- name: Disable mesos-master service
+  service:
+    name=mesos-master
+    enabled=no
+    state=stopped
+
+- name: Disable mesos-slave service
+  service:
+    name=mesos-slave
+    enabled=no
+    state=stopped
+
+- name: Disable marathon service
+  service:
+    name=marathon
+    enabled=no
+    state=stopped
+
+- name: Install supervisor deamon package
+  apt:
+    pkg=supervisor
+    state=present
+    force=yes
+
+- name: Configure supervisor
+  template:
+    src=marathon.conf.j2
+    dest=/etc/supervisor/conf.d/marathon.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart supervisor
+
+- name: Enable supervisor service
+  service:
+    name=supervisor
+    enabled=yes
+    state=started

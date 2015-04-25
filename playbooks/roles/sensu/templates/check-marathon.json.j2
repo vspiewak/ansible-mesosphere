@@ -1,0 +1,14 @@
+{
+    "checks": {
+    {% for host in groups[marathon_group] %}
+        "check-marathon-{{loop.index}}": {
+          "command": "/etc/sensu/plugins/check-marathon.rb -s {{ hostvars[host].ec2_ip_address }}",
+          "subscribers": [
+            "marathon"
+          ],
+          "interval": 60
+        }
+      {% if not loop.last %},{% endif %}
+    {% endfor %}
+
+}

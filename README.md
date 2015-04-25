@@ -5,6 +5,7 @@ Install a Mesosphere stack on EC2 (Goal: Highly Available)
 
 * Zookeeper cluster
 * Mesos cluster (with masters & slaves)
+* Marathon
 * Sensu for alerting/monitoring
 * Gitlab for hosting code
 
@@ -38,6 +39,7 @@ Configure EC2 instances:
 
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/zookeeper.yml
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/mesos.yml
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
+    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/marathon.yml
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/gitlab.yml
+    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
 

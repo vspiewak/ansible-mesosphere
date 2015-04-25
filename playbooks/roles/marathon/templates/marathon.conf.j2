@@ -1,0 +1,2 @@
+[program:marathon]
+command=/usr/bin/marathon --master zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/mesos --zk zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/marathon --event_subscriber http_callback

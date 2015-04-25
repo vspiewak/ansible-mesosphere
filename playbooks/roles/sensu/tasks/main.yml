@@ -123,6 +123,22 @@
     url=http://sensuapp.org/docs/0.17/files/default_handler.json
     dest=/etc/sensu/conf.d/default_handler.json
 
+- name: 'Install Marathon check plugin'
+  get_url:
+    url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-marathon.rb
+    dest=/etc/sensu/plugins/check-marathon.rb
+
+- name: 'Configure Marathon checks'
+  template:
+    src=check-marathon.json.j2
+    dest=/etc/sensu/conf.d/check-marathon.json
+    owner=sensu
+    group=sensu
+    mode=0755
+
+- name: 'Set file permissions on plugin'
+  file: path=/etc/sensu/plugins/check-marathon.rb state=touch mode="u=rwx,g=r,o=r"
+
 - name: 'Install Mesos check plugin'
   get_url:
     url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-mesos.rb

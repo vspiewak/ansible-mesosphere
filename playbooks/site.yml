@@ -3,5 +3,6 @@
 
 - include: zookeeper.yml
 - include: mesos.yml
-- include: sensu.yml
+- include: marathon.yml
 - include: gitlab.yml
+- include: sensu.yml
