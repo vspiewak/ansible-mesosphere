@@ -6,6 +6,7 @@
 
   roles:
     - all
+    - java
     - docker
     - mesos
     - mesos-slave

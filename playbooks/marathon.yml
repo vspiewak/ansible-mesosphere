@@ -6,5 +6,6 @@
 
   roles:
     - all
+    - java
     - mesos # needed for libmesos.dylib
     - marathon

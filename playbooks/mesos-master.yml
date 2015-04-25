@@ -6,5 +6,6 @@
 
   roles:
     - all
+    - java
     - mesos
     - mesos-master
