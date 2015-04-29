@@ -43,3 +43,9 @@ Configure EC2 instances:
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/gitlab.yml
     PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
 
+
+Terminate EC2 instances:
+
+    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/terminate-ec2.yml
+
+

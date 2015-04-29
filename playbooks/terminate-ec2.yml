@@ -1,0 +1,13 @@
+# playbook for destroying infrastructure
+
+- hosts: "{{lookup('env','CLIENT')}}_{{lookup('env','ENV')}}"
+  gather_facts: true
+  connection: local
+
+  tasks:
+
+    - name: Terminate all instances
+      local_action:
+        module: ec2
+        state: absent
+        instance_ids: "{{ ec2_id }}"
