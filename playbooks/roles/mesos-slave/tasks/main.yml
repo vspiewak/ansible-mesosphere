@@ -30,6 +30,12 @@
     - { key: "executor_registration_timeout", value: "5mins" }
   notify: Clean and restart mesos-slave
 
+- name: Disable zookeeper service
+  service:
+    name=zookeeper
+    enabled=no
+    state=stopped
+
 - name: Disable mesos-master service
   service:
     name=mesos-master

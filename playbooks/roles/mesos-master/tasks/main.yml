@@ -27,6 +27,12 @@
     mode=0644
   notify: Restart mesos-master
 
+- name: Disable zookeeper service
+  service:
+    name=zookeeper
+    enabled=no
+    state=stopped
+
 - name: Disable mesos-slave service
   service:
     name=mesos-slave
