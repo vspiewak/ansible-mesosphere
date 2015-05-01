@@ -10,13 +10,14 @@ Install a Mesosphere stack on EC2 (Goal: Highly Available)
 * Gitlab for hosting code
 
 
-Install Ansible: 
+Install Ansible:
 
     sudo easy_install pip
     sudo pip install boto --quiet --upgrade
     sudo pip install ansible --quiet --upgrade
 
-Set your AWS Credentials:
+
+Configure your AWS Credentials:
 
     export ANSIBLE_HOST_KEY_CHECKING=False
     export EC2_REGION=eu-west-1
@@ -25,27 +26,39 @@ Set your AWS Credentials:
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
-    
+
+Configure your EC2 pem file:
+
+    export PEM_NAME=<aws_pem_name>
+    export PEM_PATH=~/.ssh/<aws_pem_name>.pem
+
+
+Configure EC2 instances tags:
+
+    export CLIENT=company
+    export ENV=dev
+
+
 Create EC2 instances:
 
-    PEM_NAME=vspiewak-xke CLIENT=xke ENV=dev ansible-playbook -i inventory/local playbooks/create-ec2.yml
+    ansible-playbook -i inventory/local playbooks/create-ec2.yml
 
 
 Configure EC2 instances:
 
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/site.yml
+    ansible-playbook -i inventory/ec2.py playbooks/site.yml
 
     <or>
 
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/zookeeper.yml
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/mesos.yml
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/marathon.yml
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/gitlab.yml
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
+    ansible-playbook -i inventory/ec2.py playbooks/zookeeper.yml
+    ansible-playbook -i inventory/ec2.py playbooks/mesos.yml
+    ansible-playbook -i inventory/ec2.py playbooks/marathon.yml
+    ansible-playbook -i inventory/ec2.py playbooks/gitlab.yml
+    ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
 
 
 Terminate EC2 instances:
 
-    PEM_PATH=~/.ssh/vspiewak-xke.pem CLIENT=xke ENV=dev ansible-playbook -i inventory/ec2.py playbooks/terminate-ec2.yml
+    ansible-playbook -i inventory/ec2.py playbooks/terminate-ec2.yml
 
 
