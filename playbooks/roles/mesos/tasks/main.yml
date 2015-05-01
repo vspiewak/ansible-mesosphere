@@ -11,15 +11,11 @@
     repo="deb http://repos.mesosphere.io/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main"
     state=present
 
-- name: Update APT
-  apt: update_cache=yes
-
 - name: Install Mesos package
   apt:
     pkg=mesos
     state=present
-    force=yes
-  tags: install
+    update_cache=yes
 
 - name: Disable zookeeper service
   service:
