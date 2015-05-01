@@ -10,8 +10,9 @@
   apt:
     pkg=ntp
     state=present
+    update_cache=yes
 
-- name: Enable ntp service
+- name: Enable NTP service
   service:
     name=ntp
     enabled=yes
