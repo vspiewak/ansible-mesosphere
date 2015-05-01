@@ -20,3 +20,9 @@
     state=present
     force=yes
   tags: install
+
+- name: Disable zookeeper service
+  service:
+    name=zookeeper
+    enabled=no
+    state=stopped
