@@ -14,6 +14,13 @@
             "zookeeper"
           ],
           "interval": 60
+        },
+        "check-zookeeper-marathon-topic-{{loop.index}}": {
+          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_ip_address }}:2181 -z /marathon",
+          "subscribers": [
+            "zookeeper"
+          ],
+          "interval": 60
         }
         {% if not loop.last %},{% endif %}
     {% endfor %}
