@@ -75,7 +75,12 @@
     update_cache=yes
 
 - name: Configure sensu
-  get_url: url=http://sensuapp.org/docs/0.17/files/config.json dest=/etc/sensu/config.json mode=0440
+  copy:
+    src=config.json
+    dest=/etc/sensu/config.json
+    owner=sensu
+    group=sensu
+    mode=0644
 
 - name: Install Uchiwa package
   apt:
@@ -83,9 +88,12 @@
     state=present
 
 - name: 'Configure sensu default handler'
-  get_url:
-    url=http://sensuapp.org/docs/0.17/files/default_handler.json
+  copy:
+    src=default_handler.json
     dest=/etc/sensu/conf.d/default_handler.json
+    owner=sensu
+    group=sensu
+    mode=0644
 
 - name: 'Configure Sensu client'
   template:
@@ -130,15 +138,15 @@
    - zookeeper
    - sensu-plugin
 
-- name: 'Install sensu plugins'
+- name: 'Install Sensu community plugins'
   get_url:
-    url={{item.url}}
+    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/{{item.folder}}/{{item.name}}.rb
     dest=/etc/sensu/plugins/{{item.name}}
   with_items:
-    - { name: "check-http.rb", url: "https://github.com/sensu/sensu-community-plugins/raw/master/plugins/http/check-http.rb" }
-    - { name: "check-znode.rb", url: "https://github.com/sensu/sensu-community-plugins/raw/master/plugins/zookeeper/check-znode.rb" }
-    - { name: "check-mesos.rb", url: "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-mesos.rb" }
-    - { name: "check-marathon.rb", url: "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-marathon.rb" }
+    - { folder: "http",      name: "check-http"     }
+    - { folder: "zookeeper", name: "check-znode"    }
+    - { folder: "mesos",     name: "check-mesos"    }
+    - { folder: "mesos",     name: "check-marathon" }
 
 - name: 'Set file permissions on plugins'
   file: path=/etc/sensu/plugins/{{item}}.rb state=touch mode="u=rwx,g=r,o=r"
