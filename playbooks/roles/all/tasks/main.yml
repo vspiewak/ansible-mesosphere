@@ -11,9 +11,10 @@
     pkg=ntp
     state=present
     update_cache=yes
+  notify: Restart NTP
 
 - name: Enable NTP service
   service:
     name=ntp
     enabled=yes
-    state=restarted
+    state=started
