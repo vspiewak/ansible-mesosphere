@@ -1,14 +1,10 @@
 # Sensu role
 
-- name: Update APT
-  apt: update_cache=yes
-
 - name: Install Erlang
   apt:
     pkg=erlang-nox
     state=present
-    force=yes
-  tags: install
+    update_cache=yes
 
 - name: Install APT Key for RabbitMQ repository
   apt_key:
@@ -20,22 +16,17 @@
     repo="deb     http://www.rabbitmq.com/debian/ testing main"
     state=present
 
-- name: Update APT
-  apt: update_cache=yes
-
 - name: Install RabbitMQ
   apt:
     pkg=rabbitmq-server
     state=present
-    force=yes
-  tags: install
+    update_cache=yes
 
 - name: Enable RabbitMQ service
   service:
     name=rabbitmq-server
     enabled=yes
     state=started
-  tags: service
 
 - name: Wait 10 seconds for RabbitMQ server to be up
   shell: sleep 10
@@ -77,15 +68,13 @@
     repo="deb     http://repos.sensuapp.org/apt sensu main"
     state=present
 
-- name: Update APT
-  apt: update_cache=yes
-
 - name: Install Sensu package
   apt:
     pkg=sensu
     state=present
+    update_cache=yes
 
-- name: Download /etc/sensu/config.json
+- name: Configure sensu
   get_url: url=http://sensuapp.org/docs/0.17/files/config.json dest=/etc/sensu/config.json mode=0440
 
 - name: Install Uchiwa package
@@ -93,99 +82,10 @@
     pkg=uchiwa
     state=present
 
-- copy: src=uchiwa.json dest=/etc/sensu/uchiwa.json owner=sensu group=sensu mode=0644
-
-- name: Install Ruby & Gem
-  apt:
-    pkg={{item}}
-    state=present
-  with_items:
-   - tar
-   - patch
-   - make
-   - gcc
-   - g++
-   - ruby
-   - ruby-dev
-
-- gem: name={{item}}
-    user_install=no
-    state=latest
-  with_items:
-   - net
-   - json
-   - rest-client
-   - sensu-plugin
-   - zookeeper
-
-- name: 'Download sensu default handler'
+- name: 'Configure sensu default handler'
   get_url:
     url=http://sensuapp.org/docs/0.17/files/default_handler.json
     dest=/etc/sensu/conf.d/default_handler.json
-
-- name: 'Install Marathon check plugin'
-  get_url:
-    url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-marathon.rb
-    dest=/etc/sensu/plugins/check-marathon.rb
-
-- name: 'Configure Marathon checks'
-  template:
-    src=check-marathon.json.j2
-    dest=/etc/sensu/conf.d/check-marathon.json
-    owner=sensu
-    group=sensu
-    mode=0755
-
-- name: 'Set file permissions on plugin'
-  file: path=/etc/sensu/plugins/check-marathon.rb state=touch mode="u=rwx,g=r,o=r"
-
-- name: 'Install Mesos check plugin'
-  get_url:
-    url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-mesos.rb
-    dest=/etc/sensu/plugins/check-mesos.rb
-
-- name: 'Configure Mesos checks'
-  template:
-    src=check-mesos.json.j2
-    dest=/etc/sensu/conf.d/check-mesos.json
-    owner=sensu
-    group=sensu
-    mode=0755
-
-- name: 'Set file permissions on plugin'
-  file: path=/etc/sensu/plugins/check-mesos.rb state=touch mode="u=rwx,g=r,o=r"
-
-- name: 'Install Zookeeper check plugin'
-  get_url:
-    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/zookeeper/check-znode.rb
-    dest=/etc/sensu/plugins/check-znode.rb
-
-- name: 'Configure Zookeeper checks'
-  template:
-    src=check-zookeeper.json.j2
-    dest=/etc/sensu/conf.d/check-zookeeper.json
-    owner=sensu
-    group=sensu
-    mode=0755
-
-- name: 'Set file permissions on plugin'
-  file: path=/etc/sensu/plugins/check-znode.rb state=touch mode="u=rwx,g=r,o=r"
-
-- name: 'Install Http check plugin'
-  get_url:
-    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/http/check-http.rb
-    dest=/etc/sensu/plugins/check-http.rb
-
-- name: 'Configure Gitlab checks'
-  template:
-    src=check-http.json.j2
-    dest=/etc/sensu/conf.d/check-gitlab.json
-    owner=sensu
-    group=sensu
-    mode=0755
-
-- name: 'Set file permissions on plugin'
-  file: path=/etc/sensu/plugins/check-http.rb state=touch mode="u=rwx,g=r,o=r"
 
 - name: 'Configure Sensu client'
   template:
@@ -202,6 +102,64 @@
     owner=sensu
     group=sensu
     mode=0755
+
+- name: Configure Uchiwa dashboard
+  copy: src=uchiwa.json dest=/etc/sensu/uchiwa.json owner=sensu group=sensu mode=0644
+
+- name: Install Ruby & Gem tools
+  apt:
+    pkg={{item}}
+    state=present
+  with_items:
+   - tar
+   - patch
+   - make
+   - gcc
+   - g++
+   - ruby
+   - ruby-dev
+
+- name: Install Gem used by sensu checks
+  gem: name={{item}}
+    user_install=no
+    state=latest
+  with_items:
+   - net
+   - json
+   - rest-client
+   - zookeeper
+   - sensu-plugin
+
+- name: 'Install sensu plugins'
+  get_url:
+    url={{item.url}}
+    dest=/etc/sensu/plugins/{{item.name}}
+  with_items:
+    - { name: "check-http.rb", url: "https://github.com/sensu/sensu-community-plugins/raw/master/plugins/http/check-http.rb" }
+    - { name: "check-znode.rb", url: "https://github.com/sensu/sensu-community-plugins/raw/master/plugins/zookeeper/check-znode.rb" }
+    - { name: "check-mesos.rb", url: "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-mesos.rb" }
+    - { name: "check-marathon.rb", url: "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/mesos/check-marathon.rb" }
+
+- name: 'Set file permissions on plugins'
+  file: path=/etc/sensu/plugins/{{item}}.rb state=touch mode="u=rwx,g=r,o=r"
+  with_items:
+    - check-http
+    - check-znode
+    - check-mesos
+    - check-marathon
+
+- name: 'Configure checks'
+  template:
+    src={{item}}.json.j2
+    dest=/etc/sensu/conf.d/{{item}}.json
+    owner=sensu
+    group=sensu
+    mode=0755
+  with_items:
+    - check-zookeeper
+    - check-mesos
+    - check-marathon
+    - check-gitlab
 
 - name: 'Set /etc/sensu ownership to sensu user'
   file:
