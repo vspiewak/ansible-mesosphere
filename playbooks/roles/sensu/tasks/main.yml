@@ -176,10 +176,10 @@
     url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/http/check-http.rb
     dest=/etc/sensu/plugins/check-http.rb
 
-- name: 'Configure Http checks'
+- name: 'Configure Gitlab checks'
   template:
     src=check-http.json.j2
-    dest=/etc/sensu/conf.d/check-http.json
+    dest=/etc/sensu/conf.d/check-gitlab.json
     owner=sensu
     group=sensu
     mode=0755
