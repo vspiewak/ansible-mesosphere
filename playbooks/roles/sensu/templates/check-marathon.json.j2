@@ -9,6 +9,15 @@
           "interval": 60
         }
       {% if not loop.last %},{% endif %}
+    {% endfor %},
+    {% for host in groups[marathon_group] %}
+        "check-marathon-http-{{loop.index}}": {
+          "command": "/etc/sensu/plugins/check-http.rb -u http://{{ hostvars[host].ec2_ip_address }}:8080",
+          "subscribers": [
+            "marathon"
+          ],
+          "interval": 60
+        }
+      {% if not loop.last %},{% endif %}
     {% endfor %}
-
 }
