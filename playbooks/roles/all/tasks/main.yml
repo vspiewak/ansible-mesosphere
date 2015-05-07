@@ -1,8 +1,5 @@
 # Common role for all instances
 
-#- name: Display all variables/facts known for the host
-#  debug: var=hostvars[inventory_hostname]
-
 - name: Configuring Timezone
   shell: echo {{ timezone }} > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
