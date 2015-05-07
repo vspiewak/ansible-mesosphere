@@ -1,0 +1,2 @@
+marathon:
+  port: 8080

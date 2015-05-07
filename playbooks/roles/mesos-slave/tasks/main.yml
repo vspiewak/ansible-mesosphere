@@ -1,23 +1,5 @@
 # Mesos slave role
 
-- name: Set mesos zookeeper link
-  template:
-    src=mesos_zk.j2
-    dest=/etc/mesos/zk
-    owner=root
-    group=root
-    mode=0644
-  notify: Clean and restart mesos-slave
-
-- name: Create mesos-slave hostname file
-  template:
-    src=hostname.j2
-    dest=/etc/mesos-slave/hostname
-    owner=root
-    group=root
-    mode=0644
-  notify: Restart mesos-slave
-
 - name: Configure mesos-slave
   template:
     src=value_file.j2

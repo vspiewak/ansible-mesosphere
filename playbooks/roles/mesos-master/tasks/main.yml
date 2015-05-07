@@ -1,30 +1,17 @@
 # Mesos master role
 
-- name: Set mesos zookeeper link
+- name: Configure mesos-master
   template:
-    src=mesos_zk.j2
-    dest=/etc/mesos/zk
+    src=value_file.j2
+    dest="/etc/mesos-master/{{ item.key }}"
     owner=root
     group=root
     mode=0644
-  notify: Restart mesos-master
-
-- name: Create mesos-master hostname file
-  template:
-    src=hostname.j2
-    dest=/etc/mesos-master/hostname
-    owner=root
-    group=root
-    mode=0644
-  notify: Restart mesos-master
-
-- name: Configure mesos-master quorum
-  template:
-    src=mesos_quorum.j2
-    dest=/etc/mesos-master/quorum
-    owner=root
-    group=root
-    mode=0644
+  with_items:
+    - { key: "hostname", value: "{{ hostvars[inventory_hostname].ec2_ip_address }}" }
+    - { key: "cluster", value: "{{ mesos.cluster }}" }
+    - { key: "quorum", value: "{{mesos.quorum}}" }
+    - { key: "work_dir", value: "{{mesos.work_dir}}" }
   notify: Restart mesos-master
 
 - name: Disable mesos-slave service

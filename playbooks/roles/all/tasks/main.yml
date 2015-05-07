@@ -18,3 +18,18 @@
     name=ntp
     enabled=yes
     state=started
+
+- name: 'Remove default motd'
+  file:
+    path=/etc/motd
+    state=absent
+
+- name: Configure motd
+  copy:
+    src=dyn_motd.sh
+    dest=/etc/profile.d/dyn_motd.sh
+    owner=root
+    group=root
+
+- name: 'Set file permissions on motd script'
+  file: path=/etc/profile.d/dyn_motd.sh state=touch mode="u=rwx,g=r,o=r"

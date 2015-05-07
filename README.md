@@ -57,6 +57,11 @@ Configure EC2 instances:
     ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
 
 
+Deploy an app on marathon:
+
+    curl -XPOST -H 'Content-Type: application/json' http://54.220.34.68:8080/v2/apps -d @sample.json
+
+
 Terminate EC2 instances:
 
     ansible-playbook -i inventory/ec2.py playbooks/terminate-ec2.yml

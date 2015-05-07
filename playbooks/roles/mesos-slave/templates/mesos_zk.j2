@@ -1,1 +1,0 @@
-zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/mesos

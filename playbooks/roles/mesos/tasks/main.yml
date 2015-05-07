@@ -22,3 +22,16 @@
     name=zookeeper
     enabled=no
     state=stopped
+
+- name: Configure mesos zookeeper link
+  template:
+    src=value_file.j2
+    dest="/etc/mesos/{{ item.key }}"
+    owner=root
+    group=root
+    mode=0644
+  with_items:
+    - { key: "zk", value: "{{zookeeper.mesos}}" }
+    - { key: "ip", value: "{{ansible_default_ipv4.address}}" }
+    - { key: "logs", value: "/var/log/mesos" }
+    - { key: "ulimit", value: "-n 8192" }

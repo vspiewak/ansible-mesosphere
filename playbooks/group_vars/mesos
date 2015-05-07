@@ -1,2 +1,5 @@
 mesos:
   quorum: 2
+  port: 5050
+  cluster: "{{client}}.{{env}}.mesos-cluster"
+  work_dir: "/var/lib/mesos"

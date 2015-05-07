@@ -29,13 +29,18 @@
     group=root
     mode=0755
 
-- name: Create marathon hostname files
+- name: Configure marathon
   template:
-    src=hostname.j2
-    dest=/etc/marathon/conf/hostname
+    src=value_file.j2
+    dest="/etc/marathon/conf/{{ item.key }}"
     owner=root
     group=root
     mode=0644
+  with_items:
+    - { key: "hostname", value: "{{ hostvars[inventory_hostname].ec2_ip_address }}" }
+    - { key: "master", value: "{{zookeeper.mesos}}" }
+    - { key: "zk", value: "{{zookeeper.marathon}}" }
+    - { key: "http_port", value: "{{marathon.port}}" }
 
 - name: Disable zookeeper service
   service:
