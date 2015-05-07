@@ -59,7 +59,7 @@ Configure EC2 instances:
 
 Deploy an app on marathon:
 
-    curl -XPOST -H 'Content-Type: application/json' http://54.220.34.68:8080/v2/apps -d @sample.json
+    curl -XPOST -H 'Content-Type: application/json' http://<marathon_url>:8080/v2/apps -d @sample.json
 
 
 Terminate EC2 instances:
