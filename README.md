@@ -1,23 +1,27 @@
 Ansible Mesosphere
-------------------
+==================
 
-Install a Mesosphere stack on EC2 (Goal: Highly Available)
+Install a Mesosphere stack on EC2 :
 
-* Zookeeper cluster
-* Mesos cluster (with masters & slaves)
-* Marathon
-* Sensu for alerting/monitoring
-* Gitlab for hosting code
+  * Zookeeper cluster
+  * Mesos cluster
+  * Marathon
+  * Sensu for alerting/monitoring
+  * GitLab for hosting code
 
 
-Install Ansible:
+
+Install Ansible
+---------------
+(On OSX for instance...)
 
     sudo easy_install pip
     sudo pip install boto --quiet --upgrade
     sudo pip install ansible --quiet --upgrade
 
 
-Configure your AWS Credentials:
+Configure your AWS Credentials
+------------------------------
 
     export ANSIBLE_HOST_KEY_CHECKING=False
     export EC2_REGION=eu-west-1
@@ -27,24 +31,28 @@ Configure your AWS Credentials:
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
 
-Configure your EC2 pem file:
+Configure your EC2 pem file
+---------------------------
 
     export PEM_NAME=<aws_pem_name>
     export PEM_PATH=~/.ssh/<aws_pem_name>.pem
 
 
-Configure EC2 instances tags:
+Configure EC2 instances tags
+----------------------------
 
     export CLIENT=company
     export ENV=dev
 
 
-Create EC2 instances:
+Create EC2 instances
+--------------------
 
     ansible-playbook -i inventory/local playbooks/create-ec2.yml
 
 
-Configure EC2 instances:
+Configure EC2 instances
+-----------------------
 
     ansible-playbook -i inventory/ec2.py playbooks/site.yml
 
@@ -57,13 +65,33 @@ Configure EC2 instances:
     ansible-playbook -i inventory/ec2.py playbooks/sensu.yml
 
 
-Deploy an app on marathon:
+You can browse
+--------------
+
+  * http://<mesos_master_url>:5050
+  * http://<marathon_url>:8080
+  * http://<sensu_url>:3000
+  * http://<gitlab_url>
+
+
+Deploy an app on marathon
+-------------------------
 
     curl -XPOST -H 'Content-Type: application/json' http://<marathon_url>:8080/v2/apps -d @sample.json
 
 
-Terminate EC2 instances:
+Terminate EC2 instances
+-----------------------
 
     ansible-playbook -i inventory/ec2.py playbooks/terminate-ec2.yml
 
 
+
+TODO
+----
+
+  * Configure Sensu alerting (via mail)
+  * Configure Sensu checks for docker
+  * Configure Marathon in HA mode
+  * Configure Chronos (?)
+  * Install Chaos Monkeys
