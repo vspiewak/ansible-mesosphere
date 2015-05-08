@@ -68,10 +68,10 @@ Configure EC2 instances
 You can browse
 --------------
 
-  * http://`<mesos_master_url>`:5050
-  * http://`<marathon_url>`:8080
-  * http://`<sensu_url>`:3000
-  * http://`<gitlab_url>`
+  * `http://<mesos_master_url>:5050`
+  * `http://<marathon_url>:8080`
+  * `http://<sensu_url>:3000`
+  * `http://<gitlab_url>`
 
 
 Deploy an app on marathon
