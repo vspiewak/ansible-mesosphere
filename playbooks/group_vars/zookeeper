@@ -1,2 +1,2 @@
 zookeeper:
-  id: "{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')[3] }}"
+  id: "{{ hostvars[inventory_hostname].ec2_private_ip_address.split('.')[3] }}"

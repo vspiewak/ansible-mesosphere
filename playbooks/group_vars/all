@@ -8,7 +8,7 @@ marathon_group: "{{client}}_{{env}}_marathon"
 gitlab_group: "{{client}}_{{env}}_gitlab"
 
 zookeeper:
-  mesos: "zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/mesos"
-  marathon: "zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/marathon"
+  mesos: "zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_private_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/mesos"
+  marathon: "zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_private_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/marathon"
 
 timezone: "Europe/Paris"
