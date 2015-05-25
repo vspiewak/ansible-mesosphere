@@ -140,8 +140,8 @@
 
 - name: 'Install Sensu community plugins'
   get_url:
-    url=https://github.com/sensu/sensu-community-plugins/raw/master/plugins/{{item.folder}}/{{item.name}}.rb
-    dest=/etc/sensu/plugins/{{item.name}}
+    url=https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/{{item.folder}}/{{item.name}}.rb
+    dest=/etc/sensu/plugins/{{item.name}}.rb
   with_items:
     - { folder: "http",      name: "check-http"     }
     - { folder: "zookeeper", name: "check-znode"    }
