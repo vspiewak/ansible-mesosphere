@@ -18,25 +18,12 @@
     state=latest
   tags: install
 
-- name: Install APT Key for docker repository
-  apt_key:
-    keyserver=hkp://keyserver.ubuntu.com:80
-    id=36A1D7869245C8950F966E92D8576A8BA88D21E9
-    state=present
+- name: Download Docker installation script
+  get_url: url=https://get.docker.com dest=/opt/docker.sh mode=0755 force=no
   tags: install
 
-- name: Install Docker APT Repository
-  apt_repository:
-    repo="deb http://get.docker.io/ubuntu docker main"
-    state=present
-  tags: install
-
-- name: Install Docker
-  apt:
-    pkg=lxc-docker
-    state=present
-    update_cache=yes
-    cache_valid_time=3600
+- name: Install Docker from the script
+  shell: /opt/docker.sh
   tags: install
 
 - name: Enable Docker service
