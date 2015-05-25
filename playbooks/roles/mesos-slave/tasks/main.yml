@@ -8,6 +8,7 @@
     group=root
     mode=0644
   with_items:
+    - { key: "hostname", value: "{{ hostvars[inventory_hostname].ec2_ip_address }}" }
     - { key: "containerizers", value: "docker,mesos" }
     - { key: "executor_registration_timeout", value: "5mins" }
   notify: Clean and restart mesos-slave

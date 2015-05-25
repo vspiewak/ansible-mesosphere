@@ -32,6 +32,6 @@
     mode=0644
   with_items:
     - { key: "zk", value: "{{zookeeper.mesos}}" }
-    - { key: "ip", value: "{{ansible_default_ipv4.address}}" }
+    - { key: "ip", value: "{{ hostvars[inventory_hostname].ec2_ip_address }}" }
     - { key: "logs", value: "/var/log/mesos" }
     - { key: "ulimit", value: "-n 8192" }
