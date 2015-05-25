@@ -3,11 +3,13 @@
 - name: Configuring Timezone
   shell: echo {{ timezone }} > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
+- name: Update APT
+  apt: update_cache=yes
+
 - name: Install NTP
   apt:
     pkg=ntp
     state=present
-    update_cache=yes
   notify: Restart NTP
 
 - name: Enable NTP service

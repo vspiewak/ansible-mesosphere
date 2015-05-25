@@ -1,8 +1,5 @@
 ---
 
-- name: Update APT
-  apt: update_cache=yes
-
 - name: 'Install sshd'
   apt: pkg={{ item }} state=latest
   with_items:
