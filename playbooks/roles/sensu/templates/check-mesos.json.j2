@@ -2,7 +2,7 @@
     "checks": {
     {% for host in groups[mesos_master_group] %}
         "check-mesos-master-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-mesos.rb -s {{ hostvars[host].ec2_ip_address }} -m master",
+          "command": "/etc/sensu/plugins/check-mesos.rb -s {{ hostvars[host].ec2_private_ip_address }} -m master",
           "subscribers": [
             "mesos"
           ],
@@ -13,7 +13,7 @@
     ,
     {% for host in groups[mesos_slave_group] %}
         "check-mesos-slave-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-mesos.rb -s {{ hostvars[host].ec2_ip_address }} -m slave",
+          "command": "/etc/sensu/plugins/check-mesos.rb -s {{ hostvars[host].ec2_private_ip_address }} -m slave",
           "subscribers": [
             "mesos"
           ],

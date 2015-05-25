@@ -2,7 +2,7 @@
     "checks": {
     {% for host in groups[gitlab_group] %}
         "check-gitlab-http-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-http.rb -u http://{{ hostvars[host].ec2_ip_address }}/explore",
+          "command": "/etc/sensu/plugins/check-http.rb -u http://{{ hostvars[host].ec2_private_ip_address }}/explore",
           "subscribers": [
             "gitlab"
           ],

@@ -2,21 +2,21 @@
     "checks": {
     {% for host in groups[zookeeper_group] %}
         "check-zookeeper-zookeeper-topic-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_ip_address }}:2181 -z /zookeeper",
+          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_private_ip_address }}:2181 -z /zookeeper",
           "subscribers": [
             "zookeeper"
           ],
           "interval": 60
         },
         "check-zookeeper-mesos-topic-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_ip_address }}:2181 -z /mesos",
+          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_private_ip_address }}:2181 -z /mesos",
           "subscribers": [
             "zookeeper"
           ],
           "interval": 60
         },
         "check-zookeeper-marathon-topic-{{loop.index}}": {
-          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_ip_address }}:2181 -z /marathon",
+          "command": "/etc/sensu/plugins/check-znode.rb -s {{ hostvars[host].ec2_private_ip_address }}:2181 -z /marathon",
           "subscribers": [
             "zookeeper"
           ],
