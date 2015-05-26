@@ -23,7 +23,7 @@
     enabled=no
     state=stopped
 
-- name: Configure mesos zookeeper link
+- name: Configure mesos
   template:
     src=value_file.j2
     dest="/etc/mesos/{{ item.key }}"
