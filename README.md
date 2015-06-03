@@ -10,7 +10,6 @@ Install a Mesosphere stack on EC2 :
   * GitLab for hosting code
 
 
-
 Install Ansible
 ---------------
 (On OSX for instance...)
