@@ -73,6 +73,12 @@ You can browse
   * `http://<gitlab_url>`
 
 
+Reboot mesos slaves for new kernel
+----------------------------------
+
+    ansible -i inventory/ec2.py -m shell -a "sudo /sbin/reboot" -u admin $CLIENT'_'$ENV'_mesos_slave'
+
+
 Deploy an app on marathon
 -------------------------
 
