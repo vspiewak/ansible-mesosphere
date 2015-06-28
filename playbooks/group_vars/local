@@ -5,7 +5,7 @@ amazon:
   env: "{{env}}"
   instances:
     zookeeper:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 3
       role: zookeeper
@@ -19,7 +19,7 @@ amazon:
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
     mesos_master:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 3
       role: mesos
@@ -36,7 +36,7 @@ amazon:
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
     mesos_slave:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 2
       role: mesos
@@ -49,7 +49,7 @@ amazon:
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
     marathon:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 1
       role: marathon
@@ -61,7 +61,7 @@ amazon:
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
           - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
     sensu:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 1
       role: sensu
@@ -72,7 +72,7 @@ amazon:
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 15672, to_port: 15672, cidr_ip: 0.0.0.0/0 }
     gitlab:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: m1.small
       count: 1
       role: gitlab
@@ -82,7 +82,7 @@ amazon:
           - { proto: tcp, from_port: 80, to_port: 80, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
     bamboo:
-      ami: ami-cb47c1bc
+      ami: ami-e7e66a90
       type: t1.micro
       count: 0
       role: bamboo
