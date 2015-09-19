@@ -16,11 +16,17 @@
 - name: 'Enable and Start postfix service'
   service: name=postfix enabled=yes state=started
 
-- name: 'Download GitLab deb'
-  get_url: url=https://downloads-packages.s3.amazonaws.com/debian-7.8/gitlab-ce_7.10.0~omnibus-1_amd64.deb dest=/tmp/gitlab.deb
+- name: 'Download GitLab deb repository script'
+  get_url: url=https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh dest=/tmp/script.deb.sh
 
-- name: 'Install GitLab deb'
-  apt: deb=/tmp/gitlab.deb
+- name: 'Make GitLab deb script executable'
+  file: path=/tmp/script.deb.sh mode=0777
+
+- name: 'Install GitLab deb repository'
+  shell: /tmp/script.deb.sh
+
+- name: 'Install Gitlab'
+  apt: pkg=gitlab-ce state=latest
 
 - name: 'Check if GitLab is already configured'
   stat: path=/var/opt/gitlab

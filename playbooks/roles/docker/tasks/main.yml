@@ -1,8 +1,8 @@
 # Docker role
 
-- name: Add debian wheezy-backports repository for kernel update
+- name: Add debian jessie-backports repository
   apt_repository:
-    repo="deb http://http.debian.net/debian wheezy-backports main"
+    repo="deb http://http.debian.net/debian jessie-backports main"
     state=present
   tags: install
 
@@ -10,20 +10,10 @@
   apt: update_cache=yes
   tags: install
 
-- name: Update Kernel
+- name: Install docker
   apt:
-    pkg="linux-image-amd64"
-    default_release=wheezy-backports
-    install_recommends=no
-    state=latest
-  tags: install
-
-- name: Download Docker installation script
-  get_url: url=https://get.docker.com dest=/opt/docker.sh mode=0755 force=no
-  tags: install
-
-- name: Install Docker from the script
-  shell: /opt/docker.sh
+    pkg=docker.io
+    state=present
   tags: install
 
 - name: Enable Docker service

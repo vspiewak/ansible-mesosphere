@@ -3,16 +3,18 @@
 - name: Create EC2 security groups
   local_action:
     module: ec2_group
-    name: "{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
-    description: "{{amazon.client}}_{{amazon.env}}_{{item.key}} security group rules"
+    vpc_id: "{{amazon.vpc.id}}"
+    name: "{{amazon.vpc.id}}_{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
+    description: "{{amazon.vpc.id}}_{{amazon.client}}_{{amazon.env}}_{{item.key}} security group rules"
   with_dict: amazon.instances
   tags: security
 
 - name: Apply EC2 security group rules
   local_action:
     module: ec2_group
-    name: "{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
-    description: "{{amazon.client}}_{{amazon.env}}_{{item.key}} security group rules"
+    vpc_id: "{{amazon.vpc.id}}"
+    name: "{{amazon.vpc.id}}_{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
+    description: "{{amazon.vpc.id}}_{{amazon.client}}_{{amazon.env}}_{{item.key}} security group rules"
     rules: "{{item.value.security_group.rules}}"
   with_dict: amazon.instances
   tags: security
@@ -20,9 +22,11 @@
 - name: Create EC2 instances
   local_action:
     module: ec2
+    assign_public_ip: yes
+    vpc_subnet_id: "{{amazon.vpc.subnet}}"
     key_name: "{{keypair}}"
     instance_type: "{{item.value.type}}"
-    group: "{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
+    group: "{{amazon.vpc.id}}_{{amazon.client}}_{{amazon.env}}_{{item.key}}_sg"
     instance_tags:
       Client: "{{amazon.client}}"
       Environment: "{{amazon.env}}"

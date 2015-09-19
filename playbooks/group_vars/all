@@ -1,5 +1,7 @@
 client: "{{ lookup('env','CLIENT') }}"
 env: "{{ lookup('env','ENV') }}"
+vpc_id: "{{ lookup('env','VPC_ID') }}"
+subnet_id: "{{ lookup('env','SUBNET_ID') }}"
 
 zookeeper_group: "{{client}}_{{env}}_zookeeper"
 mesos_master_group: "{{client}}_{{env}}_mesos_master"

@@ -3,10 +3,13 @@ keypair: "{{ lookup('env','PEM_NAME') }}"
 amazon:
   client: "{{client}}"
   env: "{{env}}"
+  vpc:
+    id: "{{vpc_id}}"
+    subnet: "{{subnet_id}}"
   instances:
     zookeeper:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 3
       role: zookeeper
       security_group:
@@ -15,12 +18,12 @@ amazon:
           - { proto: tcp, from_port: 2181, to_port: 2181, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 2888, to_port: 2888, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 3888, to_port: 3888, cidr_ip: 0.0.0.0/0 }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_master_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_slave_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_marathon_sg" }
     mesos_master:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 3
       role: mesos
       security_group:
@@ -32,12 +35,12 @@ amazon:
           - { proto: tcp, from_port: 2888, to_port: 2888, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 3888, to_port: 3888, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 8181, to_port: 8181, cidr_ip: 0.0.0.0/0 }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_master_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_slave_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_marathon_sg" }
     mesos_slave:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 2
       role: mesos
       security_group:
@@ -45,24 +48,24 @@ amazon:
           - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 31000, to_port: 32000, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 5051, to_port: 5051, cidr_ip: 0.0.0.0/0 }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_master_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_slave_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_marathon_sg" }
     marathon:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 1
       role: marathon
       security_group:
         rules:
           - { proto: tcp, from_port: 22, to_port: 22, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_master_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_mesos_slave_sg" }
-          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{client}}_{{env}}_marathon_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_master_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_mesos_slave_sg" }
+          - { proto: tcp, from_port: 1024, to_port: 65535, group_name: "{{vpc_id}}_{{client}}_{{env}}_marathon_sg" }
     sensu:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 1
       role: sensu
       security_group:
@@ -72,8 +75,8 @@ amazon:
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 15672, to_port: 15672, cidr_ip: 0.0.0.0/0 }
     gitlab:
-      ami: ami-e7e66a90
-      type: m1.small
+      ami: ami-99f39eee
+      type: t2.small
       count: 1
       role: gitlab
       security_group:
@@ -82,8 +85,8 @@ amazon:
           - { proto: tcp, from_port: 80, to_port: 80, cidr_ip: 0.0.0.0/0 }
           - { proto: tcp, from_port: 8080, to_port: 8080, cidr_ip: 0.0.0.0/0 }
     bamboo:
-      ami: ami-e7e66a90
-      type: t1.micro
+      ami: ami-99f39eee
+      type: t2.micro
       count: 0
       role: bamboo
       security_group:

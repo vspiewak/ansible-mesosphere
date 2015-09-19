@@ -15,8 +15,9 @@ Install Ansible
 (On OSX for instance...)
 
     sudo easy_install pip
-    sudo pip install boto --quiet --upgrade
-    sudo pip install ansible --quiet --upgrade
+    sudo pip install --upgrade pip
+    sudo -H pip install --upgrade boto
+    sudo -H pip install --upgrade ansible
 
 
 Configure your AWS Credentials
@@ -42,6 +43,15 @@ Configure EC2 instances tags
 
     export CLIENT=company
     export ENV=dev
+
+
+Configure your VPC
+------------------
+
+Use the default VPC or create one with a public subnet
+
+    export VPC_ID=<vpc_id>
+    export SUBNET_ID=<public_subnet_id>
 
 
 Create EC2 instances
@@ -71,12 +81,6 @@ You can browse
   * `http://<marathon_url>:8080`
   * `http://<sensu_url>:3000`
   * `http://<gitlab_url>`
-
-
-Reboot mesos slaves for new kernel
-----------------------------------
-
-    ansible -i inventory/ec2.py -m shell -a "sudo /sbin/reboot" -u admin $CLIENT'_'$ENV'_mesos_slave'
 
 
 Deploy an app on marathon
