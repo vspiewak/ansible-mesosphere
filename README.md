@@ -15,7 +15,7 @@ Install Ansible
 (On OSX for instance...)
 
     sudo easy_install pip
-    sudo pip install --upgrade pip
+    sudo -H pip install --upgrade pip
     sudo -H pip install --upgrade boto
     sudo -H pip install --upgrade ansible
 
