@@ -2,7 +2,7 @@
 
 - name: Install Erlang
   apt:
-    pkg=erlang-nox
+    pkg="erlang-nox={{version.erlang}}"
     state=present
     update_cache=yes
 
@@ -18,7 +18,7 @@
 
 - name: Install RabbitMQ
   apt:
-    pkg=rabbitmq-server
+    pkg="rabbitmq-server={{version.rabbitmq}}"
     state=present
     update_cache=yes
 
@@ -49,7 +49,7 @@
 
 - name: Install Redis server
   apt:
-    pkg=redis-server
+    pkg="redis-server={{version.redis}}"
     state=present
 
 - name: Enable Redis service
@@ -70,7 +70,7 @@
 
 - name: Install Sensu package
   apt:
-    pkg=sensu
+    pkg="sensu={{version.sensu}}"
     state=present
     update_cache=yes
 
@@ -84,7 +84,7 @@
 
 - name: Install Uchiwa package
   apt:
-    pkg=uchiwa
+    pkg="uchiwa={{version.uchiwa}}"
     state=present
 
 - name: 'Configure sensu default handler'
@@ -130,7 +130,7 @@
 - name: Install Gem used by sensu checks
   gem: name={{item}}
     user_install=no
-    state=latest
+    state=present
   with_items:
    - net
    - json

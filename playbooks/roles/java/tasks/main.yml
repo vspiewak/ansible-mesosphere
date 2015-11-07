@@ -11,6 +11,6 @@
 
 - name: Install Oracle Java
   apt:
-    name=oracle-java8-installer
-    state=latest
+    name="oracle-java8-installer={{version.java}}"
+    state=present
     update_cache=yes

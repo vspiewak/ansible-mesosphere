@@ -14,3 +14,15 @@ zookeeper:
   marathon: "zk://{% for host in groups[zookeeper_group] %}{{ hostvars[host].ec2_private_ip_address }}:2181{% if not loop.last %},{% endif %}{% endfor %}/marathon"
 
 timezone: "Europe/Paris"
+
+version:
+  java: "8u66+8u65arm-1~webupd8~1"
+  zookeeper: "3.4.5+dfsg-2"
+  zookeeperd: "3.4.5+dfsg-2"
+  mesos: "0.25.0-0.2.70.debian81"
+  marathon: "0.11.1-1.0.432.debian81"
+  erlang: "1:17.3-dfsg-4"
+  rabbitmq: "3.5.6-1"
+  redis: "2:2.8.17-1+deb8u1"
+  sensu: "0.20.3-1"
+  uchiwa: "0.10.3-1"

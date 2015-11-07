@@ -13,7 +13,7 @@
 
 - name: Install Mesos package
   apt:
-    pkg=mesos
+    pkg="mesos={{version.mesos}}"
     state=present
     update_cache=yes
 

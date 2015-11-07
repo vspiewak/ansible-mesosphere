@@ -16,7 +16,7 @@
 
 - name: Install Marathon package
   apt:
-    pkg=marathon
+    pkg="marathon={{version.marathon}}"
     state=present
     force=yes
   tags: install

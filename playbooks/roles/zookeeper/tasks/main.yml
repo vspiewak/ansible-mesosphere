@@ -8,8 +8,8 @@
   apt: pkg={{item}} state=installed
   tags: bootstrap
   with_items:
-    - zookeeper
-    - zookeeperd
+    - "zookeeper={{version.zookeeper}}"
+    - "zookeeperd={{version.zookeeperd}}"
 
 - name: Overwrite myid file
   template: src=myid.j2 dest=/etc/zookeeper/conf/myid
