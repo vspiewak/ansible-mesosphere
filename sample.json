@@ -6,7 +6,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "elasticsearch",
+      "image": "elasticsearch:1.5",
       "network": "BRIDGE",
       "portMappings": [
         { "containerPort": 9200, "hostPort": 0, "servicePort": 0, "protocol": "tcp" }
